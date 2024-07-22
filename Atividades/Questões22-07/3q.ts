@@ -1,19 +1,25 @@
 class Conta:
     def __init__(self, numero, saldo=0):
-        self.numero = numero
-        self.saldo = saldo
+        self.__numero = numero
+        self.__saldo = saldo
 
     def depositar(self, valor):
-        self.saldo += valor
+        self.__saldo += valor
 
     def sacar(self, valor):
-        if valor <= self.saldo:
-            self.saldo -= valor
+        if valor <= self.__saldo:
+            self.__saldo -= valor
         else:
             print("Saldo insuficiente")
 
     def consultar_saldo(self):
-        return self.saldo
+        return self.__saldo
+
+    def get_numero(self):
+        return self.__numero
+
+    def get_saldo(self):
+        return self.__saldo
 
 
 class Banco:
@@ -39,11 +45,11 @@ class Banco:
             return None
 
     def listar_contas(self):
-        return [conta.numero for conta in self.__contas]
+        return [conta.get_numero() for conta in self.__contas]
 
     def __consulta_indice(self, numero):
         for conta in self.__contas:
-            if conta.numero == numero:
+            if conta.get_numero() == numero:
                 return conta
         return None
 
@@ -53,7 +59,7 @@ class Banco:
 # Teste da classe Conta
 conta1 = Conta(1, 1000)
 conta2 = Conta(2, 2000)
-assert conta1.numero == 1
+assert conta1.get_numero() == 1
 assert conta1.consultar_saldo() == 1000
 conta1.depositar(500)
 assert conta1.consultar_saldo() == 1500
@@ -70,7 +76,7 @@ assert conta.consultar_saldo() == 1200
 banco.remover_conta(1)
 assert banco.listar_contas() == [2]
 
-
+# Verificando acesso a atributos privados
 try:
     banco.__contas
 except AttributeError:
